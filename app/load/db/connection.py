@@ -71,6 +71,7 @@ class Connector:
         if close is True:
             self.close()
 
+
     def execute_mult(self, statement,parameters = None, *, commit: bool = False, close: bool = True):
         """This method is to handle general executions sent to the database.
         The parameters can be either a list or a dictionary.

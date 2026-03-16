@@ -4,6 +4,9 @@ class DMIDataTransformer:
         pass
 
     def dmi_data_to_db_dict(self, pull_time, data):
+        """This method transforms the data recorded from the DMI API.
+        It pulls out the data we want, and outputs a list of dictionaries.
+        Each dictionary corresponds to a row in the database."""
         filtered_data = [{
             "dmi_id": feature["id"],
             "parameter_id": feature["properties"]["parameterId"],
@@ -15,23 +18,29 @@ class DMIDataTransformer:
         return filtered_data
 
 
-
 class SpecDataTransformer:
     def __init__(self):
         pass
 
     def bme_record_to_dict(self,record):
+        """This method transforms the data recorded from the BME280 data in the Specialisterne's API.
+        It pulls out the data we want, and changes temperature from millicelsius to Celsius.
+        The method outputs a dictionary."""
         db_dict = {}
         db_dict["reader_id"] = record['id']
         db_dict["location"] = "outside"
         read_dict = record.get("reading").get("BME280")
-        for col in ["humidity","pressure","temperature"]:
+        for col in ["humidity","temperature"]:
             db_dict[col] = read_dict[col]
+        db_dict["pressure"] = read_dict["pressure"]/100
         db_dict["observed_at"] = record["timestamp"]
 
         return db_dict
 
     def ds_record_to_dict(self,record):
+        """This method transforms the data recorded from the DS18B20 data in the Specialisterne's API.
+        It pulls out the data we want, and changes temperature from millicelsius to Celsius.
+        The method outputs a dictionary."""
         db_dict = {}
         db_dict["reader_id"] = record['id']
         if record["reading"]["DS18B20"]["device_name"] == "28-0000003e33d5":
@@ -44,7 +53,8 @@ class SpecDataTransformer:
 
     def spec_data_to_db_dict(self,pull_time, data):
         """This method takes the recorded data from the specialisterne API, and transforms it to a dict of two lists.
-        The keys of the dict are the table names for the lists to be put into"""
+        The keys of the dict are the table names for the lists to be put into.
+        It returns a dict with lists of dicts (a dict per record) where the parent dict is keyed by the names of the readers (which are also the target table names)."""
         bme_db_list = []
         ds_db_list = []
         db_dict = {"BME280": bme_db_list, "DS18B20": ds_db_list}

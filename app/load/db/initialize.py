@@ -1,15 +1,24 @@
 # This module is for initializing the database
 from app.load.db.connection import Connector
 from app.load.schemas.table_schema import TABLES
-from app.load.schemas.database_schema import database_schema
+from app.load.schemas.database_schema import local_database_schema,docker_database_schema
 from psycopg2 import sql
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 
 class DatabaseInitializer:
-    def __init__(self):
-        self.connector = Connector(database_schema["database"], database_schema["user"], database_schema["password"], database_schema["host"])
+    """This class handles the initial set up of the database.
+    This includes creating it if necessary.
+    The parameter 'docker' tells the class whether the database is in docker or a local database.
+    Based on this parameter, the class pulls the relevant connection info from database_schema.py"""
+
+    def __init__(self, docker: bool = False):
+        if docker:
+            self.db = Connector(docker_database_schema["database"], docker_database_schema["user"],
+                                       docker_database_schema["password"], docker_database_schema["host"])
+        else:
+            self.db = Connector(local_database_schema["database"], local_database_schema["user"], local_database_schema["password"], local_database_schema["host"])
 
     #This should maybe be in a separate class? So that we can open the connection once, and create all the tables
     def set_up_table(self,table_name: str, columns:dict, close:bool=True):
@@ -35,15 +44,15 @@ class DatabaseInitializer:
             sql.SQL(",\n").join(column_defs)
         )
 
-        self.connector.execute(query, close=close, commit=True)
+        self.db.execute(query, close=close, commit=True)
 
     def initialize_db(self):
-        self.connector.connect()
+        self.db.connect()
         for table in TABLES:
             print(f"Setting up table: {table}")
             self.set_up_table(table,TABLES[table],False)
 
-        self.connector.close()
+        self.db.close()
 
 
 
@@ -53,9 +62,9 @@ class DatabaseInitializer:
         # Connect to server (without specifying a database yet)
         conn = psycopg2.connect(
             dbname="postgres",
-            user=self.connector.user,
-            password=self.connector.password,
-            host=self.connector.host,
+            user=self.db.user,
+            password=self.db.password,
+            host=self.db.host,
             port=5432
         )
 

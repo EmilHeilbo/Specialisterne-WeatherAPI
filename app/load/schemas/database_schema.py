@@ -3,7 +3,7 @@
 #There are two schemas. One is for working with a local database in postgres.
 #The other is for running in docker.
 #local database
-database_schema = {"database": "weather_db",
+local_database_schema = {"database": "weather_db",
                    "user":"postgres",
                    "password":"Hestehop11235!",
                    "host": "localhost"}
@@ -12,4 +12,9 @@ database_schema = {"database": "weather_db",
 
 
 #Docker
-#database_schema = {"database": "weather_db", "user":"weather_app","password":"Hestehop11235!", "host": "db"}
+docker_database_schema = {
+    "database": "weather_db",
+    "user":"weather_app",
+    "password":"Hestehop11235!",
+    "host": "db"
+}

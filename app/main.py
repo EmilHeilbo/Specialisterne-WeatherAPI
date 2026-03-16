@@ -1,17 +1,22 @@
-from load.db.initialize import DatabaseInitializer
-from load.db.CRUD import CRUD
-from pipeline.etl import spec_etl, dmi_etl
+from app.pipeline.etl import ETLProcess
+from app.load.db.initialize import DatabaseInitializer
+from app.load.db.CRUD import CRUD
 
 
 
 def main():
     print("hej")
-    initializer = DatabaseInitializer()
+    docker = True
+    initializer = DatabaseInitializer(docker=docker)
     initializer.create_db()
     initializer.initialize_db()
-    crud = CRUD()
-    crud.cleanse_db()
-    spec_etl()
+
+    #crud = CRUD()
+    #crud.cleanse_db()
+
+    etl_process = ETLProcess(docker=docker)
+    etl_process.update_database()
+    #spec_etl()
 
 
     #API = SpecAPI()

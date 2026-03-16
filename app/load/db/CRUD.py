@@ -2,13 +2,17 @@ from app.load.db.connection import Connector
 from app.load.error_handling.type_control import test_parameter, test_parameters
 from app.load.schemas.table_schema import TABLES
 from psycopg2 import sql
-from app.load.schemas.database_schema import database_schema
+from app.load.schemas.database_schema import local_database_schema, docker_database_schema
 
 
 class CRUD:
-    def __init__(self):
-        self.db = Connector(database_schema["database"], database_schema["user"], database_schema["password"], database_schema["host"])
-
+    def __init__(self, docker:bool = False):
+        if docker:
+            self.db = Connector(docker_database_schema["database"], docker_database_schema["user"],
+                                   docker_database_schema["password"], docker_database_schema["host"])
+        else:
+            self.db = Connector(local_database_schema["database"], local_database_schema["user"],
+                                   local_database_schema["password"], local_database_schema["host"])
 
     #NB: The create method currently doesn't work as is
     def create_row(self, table_name: str, row: dict, commit:bool = True, close:bool = True):
@@ -31,13 +35,13 @@ class CRUD:
         column_names = [sql.Identifier(col_name) for col_name in columns]
 
         #Building the query
-        query = sql.SQL("""INSERT INTO {} ({})""").format(
+        query = sql.SQL("""INSERT INTO {} ({})
+        VALUES %s
+        ON CONFLICT (uuid) DO NOTHING
+        """).format(
             sql.Identifier(table_name),
             sql.SQL(", ").join(column_names)
         )
-        query +="""\n
-        VALUES ({placeholders})
-        """
 
         self.db.execute(query, row, commit=commit, close=close)
 
@@ -63,6 +67,7 @@ class CRUD:
         #Building the query
         query = sql.SQL("""INSERT INTO {} ({})
         VALUES %s
+        ON CONFLICT DO NOTHING
         """).format(
             sql.Identifier(table_name),
             sql.SQL(", ").join(column_names)
