@@ -1,0 +1,3 @@
+[submodule "ETL-Pipeline"]
+	path = ETL-Pipeline
+	url = https://github.com/NervousPapaya/Specialisterne-Case---ETL-Pipeline.git
