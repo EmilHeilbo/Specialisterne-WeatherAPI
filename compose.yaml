@@ -1,7 +1,6 @@
 ﻿services:
-  specialisterne weatherapispecialisterneweatherapi:
-    image: specialisterne weatherapispecialisterneweatherapi
+  weather-api:
+    image: weather-api
     build:
       context: .
-      dockerfile: Specialisterne WeatherAPI/Dockerfile
-
+      dockerfile: Specialisterne-WeatherAPI/Dockerfile
