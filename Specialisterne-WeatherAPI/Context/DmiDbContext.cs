@@ -3,17 +3,8 @@ using Specialisterne_WeatherAPI.DTOs;
 
 namespace Specialisterne_WeatherAPI.Context;
 
-public class DmiDbContext : DbContext
+public class DmiDbContext(DbContextOptions<DmiDbContext> options) : DbContext(options)
 {
-    public DmiDbContext()
-    {
-    }
-
-    public DmiDbContext(DbContextOptions<DmiDbContext> options)
-        : base(options)
-    {
-    }
-
     public virtual DbSet<Bme280> Bme280 { get; set; }
     public virtual DbSet<Dmi> Dmi { get; set; }
     public virtual DbSet<Ds18B20> Ds18B20 { get; set; }
