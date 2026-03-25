@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Scalar.AspNetCore;
+using Specialisterne_WeatherAPI;
 using Specialisterne_WeatherAPI.Context;
 using Specialisterne_WeatherAPI.DTOs;
 
@@ -23,14 +24,18 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-var dmiApi = app.MapGroup("/api/dmi");
-dmiApi.MapGet("/", (DmiDbContext db) => 
-        db.Dmi.ToList())
-        .WithName("GetDmi");
+using var scope = app.Services.CreateScope();
 
+var dmiDb = scope.ServiceProvider.GetRequiredService<DmiDbContext>();
+app.MapEndpoints<Dmi>(dmiDb);
+app.MapEndpoints<Bme280>(dmiDb);
+app.MapEndpoints<Ds18B20>(dmiDb);
+app.MapEndpoints<Scd41>(dmiDb);
+    
 app.Run();
 
 [JsonSerializable(typeof(List<Dmi>))]
 [JsonSerializable(typeof(List<Bme280>))]
+[JsonSerializable(typeof(List<Ds18B20>))]
 [JsonSerializable(typeof(List<Scd41>))]
 internal partial class AppJsonSerializerContext : JsonSerializerContext;
