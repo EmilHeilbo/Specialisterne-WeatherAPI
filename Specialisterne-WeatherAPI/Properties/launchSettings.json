@@ -4,8 +4,10 @@
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
+      "hotReloadEnabled": true,
+      "hotReloadProfile" : "aspnetcore",
       "launchBrowser": true,
-      "launchUrl": "todos",
+      "launchUrl": "scalar",
       "applicationUrl": "http://localhost:5014",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
