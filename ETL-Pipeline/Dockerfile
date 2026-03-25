@@ -1,10 +1,11 @@
-FROM python:3.12-slim
+FROM ghcr.io/astral-sh/uv:python3.12-alpine
 
 WORKDIR /app
+RUN uv init
 
-COPY requirements.txt  .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
+RUN uv pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 
-CMD ["python", "-m", "app.main"]
+CMD ["uv", "run", "-m", "app.main"]
