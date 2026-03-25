@@ -18,6 +18,10 @@ The final project will be runnable in Docker using the `compose.yaml` file.
 
 1. Clone this project and pull the submodules as well.
 2. Configure `ETL-Pipeline` according to the README found within.
+   1. Copy `ETL-Pipeline/.env.template` to `ETL-Pipeline/.env`
+   2. Register an account and get an API key for the services listed in the README
+   3. Paste your API keys into `ETL-Pipeline/.env`
+   4. Update the DB_USER, DB_PASSWORD and DB_NAME variables for slightly improved security
 3. Install Docker (or another OCI Runtime) on the PC/Server you plan on using.
    1. You can check if it's installed by running `docker-compose -v`
 4. Start the project with `docker-compose up -d`; this'll daemonize the process, meaning it runs in the background instead of being dependant on the active terminal session.
