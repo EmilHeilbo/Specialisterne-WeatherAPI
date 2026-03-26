@@ -36,7 +36,7 @@ The final project will be runnable in Docker using the `compose.yaml` file.
 
 ## To Do
 
-- [ ] Examine and integrate database schema as DTOs
+- [x] Examine and integrate database schema as DTOs
 - [ ] Map endpoints to fetch the following
   - List of weather stations
   - Get measurements from a specific station
@@ -45,7 +45,7 @@ The final project will be runnable in Docker using the `compose.yaml` file.
   - From date
   - To date
   - Data type
-- [ ] Add Swagger, Scalar or similar to provide API documentation
+- [x] Add Swagger, Scalar or similar to provide API documentation
 - [ ] Thorough unit testing of the API backend
 - [ ] Containerize and test using a CI/CD pipeline
 - [ ] Add API Authentication/Authorization, rate-limiting, and caching
