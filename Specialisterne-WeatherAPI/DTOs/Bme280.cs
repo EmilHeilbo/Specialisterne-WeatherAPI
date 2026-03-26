@@ -8,14 +8,10 @@ namespace Specialisterne_WeatherAPI.DTOs;
 public record Bme280(
     [property: Column("BME280_id")] int Id,
     [property: Column("reader_id")] Guid ReaderId,
-    [property: Column("location"), MaxLength(7)]
-    string Location,
-    [property: Column("humidity"), Precision(20, 13)]
-    decimal Humidity,
-    [property: Column("temperature"), Precision(20, 13)]
-    decimal Temperature,
-    [property: Column("pressure"), Precision(20, 13)]
-    decimal Pressure,
+    [property: Column("location"), MaxLength(7)] string Location,
+    [property: Column("humidity"), Precision(20, 13)] decimal Humidity,
+    [property: Column("temperature"), Precision(20, 13)] decimal Temperature,
+    [property: Column("pressure"), Precision(20, 13)] decimal Pressure,
     [property: Column("observed_at")] DateTime ObservedAt,
     [property: Column("pulled_at")] DateTime PulledAt
 );

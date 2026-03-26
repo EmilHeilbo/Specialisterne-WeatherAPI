@@ -31,7 +31,7 @@ app.MapEndpoints<Dmi>(dmiDb);
 app.MapEndpoints<Bme280>(dmiDb);
 app.MapEndpoints<Ds18B20>(dmiDb);
 app.MapEndpoints<Scd41>(dmiDb);
-    
+
 app.Run();
 
 [JsonSerializable(typeof(List<Dmi>))]
