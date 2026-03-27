@@ -26,11 +26,35 @@ if (app.Environment.IsDevelopment())
 
 using var scope = app.Services.CreateScope();
 
-var dmiDb = scope.ServiceProvider.GetRequiredService<DmiDbContext>();
+var dmiDb = scope.ServiceProvider.GetRequiredService<DmiDbContext>(); 
+
 var dmiApi = app.MapEndpoints<Dmi>(dmiDb);
+dmiApi.MapGet("/dmi/{dmiId}", (string dmiId) =>
+    dmiDb.Dmi.FirstOrDefault(i =>
+        i.DmiId == Guid.Parse(dmiId)) is { } dmi
+        ? Results.Ok(dmi)
+        : Results.NotFound());
+
 var bmeApi = app.MapEndpoints<Bme280>(dmiDb);
+bmeApi.MapGet("/station/{readerId}", (string readerId) =>
+    dmiDb.Bme280.FirstOrDefault(i =>
+        i.ReaderId == Guid.Parse(readerId)) is { } bme
+        ? Results.Ok(bme)
+        : Results.NotFound());
+
 var dsApi = app.MapEndpoints<Ds18B20>(dmiDb);
+dsApi.MapGet("/station/{readerId}", (string readerId) =>
+    dmiDb.Ds18B20.FirstOrDefault(i =>
+        i.ReaderId == Guid.Parse(readerId)) is { } bme
+        ? Results.Ok(bme)
+        : Results.NotFound());
+
 var scdApi = app.MapEndpoints<Scd41>(dmiDb);
+scdApi.MapGet("/station/{readerId}", (string readerId) =>
+    dmiDb.Scd41.FirstOrDefault(i =>
+        i.ReaderId == Guid.Parse(readerId)) is { } bme
+        ? Results.Ok(bme)
+        : Results.NotFound());
 
 app.Run();
 

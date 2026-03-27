@@ -26,31 +26,6 @@ public static class ApiMapper
                     : Results.NotFound())
             .WithName($"Get{typeof(T).Name}ById");
 
-        List<string> columns = [
-            "ReaderId",
-            "DmiId"
-        ];
-        foreach (var c in columns)
-        {
-            try
-            {
-                if (db.Set<T>().Any(t => EF.Property<Guid?>(t, c).HasValue))
-                {
-                    api.MapGet($"/{c[0..(c.EndsWith("Id") ? -2 : c.Length)]}", (string id) =>
-                            db                                .Set<T>()
-                                .FirstOrDefault(item =>
-                                    EF.Property<Guid>(item, c).ToString() == id) is { } t
-                            ? Results.Ok(t)
-                            : Results.NotFound())
-                        .WithName($"Get{typeof(T).Name}By{c}");
-                }
-            }
-            catch
-            {
-                Console.WriteLine($"{typeof(T).Name} has no property `{c}`");
-            }
-        }
-
         return api;
     }
 }
