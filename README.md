@@ -37,14 +37,14 @@ The final project will be runnable in Docker using the `compose.yaml` file.
 ## To Do
 
 - [x] Examine and integrate database schema as DTOs
-- [ ] Map endpoints to fetch the following
-  - List of weather stations
-  - Get measurements from a specific station
-  - Get and compare measurements between stations
-- [ ] Add filters to endpoints using query parameters
-  - From date
-  - To date
-  - Data type
+- [x] Map endpoints to fetch the following
+  - [x] List of weather stations
+  - [x] Get measurements from a specific station
+  - [ ] Get and compare measurements between stations
+- [x] Add filters to endpoints using query parameters
+  - [x] From date
+  - [x] To date
+  - [ ] Data type
 - [x] Add Swagger, Scalar or similar to provide API documentation
 - [ ] Thorough unit testing of the API backend
 - [ ] Containerize and test using a CI/CD pipeline

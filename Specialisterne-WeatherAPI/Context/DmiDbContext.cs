@@ -22,14 +22,14 @@ public sealed class DmiDbContext(DbContextOptions<DmiDbContext> options) : DbCon
     }
 
     [Obsolete("DB Context is read-only",true)]
-#pragma warning disable CS0809
+    #pragma warning disable CS0809
     public override int SaveChanges()
     {
         throw new InvalidOperationException("This context is read-only.");
     }
 
     [Obsolete("DB Context is read-only",true)]
-#pragma warning disable CS0809
+    #pragma warning disable CS0809
     public override int SaveChanges(bool acceptAll)
     {
         throw new InvalidOperationException("This context is read-only.");
