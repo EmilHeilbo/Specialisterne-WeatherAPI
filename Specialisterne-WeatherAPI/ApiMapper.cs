@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Specialisterne_WeatherAPI;
 
@@ -26,5 +25,30 @@ public static class ApiMapper
                     ? Results.Ok(item)
                     : Results.NotFound())
             .WithName($"Get{typeof(T).Name}ById");
+
+        List<String> columns = [
+            "ReaderId",
+            "DmiId"
+        ];
+        foreach (string c in columns)
+        {
+            try
+            {
+                if (db.Set<T>().Any(t => EF.Property<Guid?>(t, c).HasValue))
+                {
+                    api.MapGet($"/{c[0..c.IndexOf("Id")]}", (string id) =>
+                        db.Set<T>()
+                            .Where(t => EF.Property<Guid>(t, c).ToString() == id)
+                            .FirstOrDefault() is { } t
+                            ? Results.Ok(t)
+                            : Results.NotFound())
+                        .WithName($"Get{typeof(T).Name}By{c}");
+                }
+            }
+            catch
+            {
+                Console.WriteLine($"{typeof(T).Name} has no property `{c}`");
+            }
+        }
     }
 }
