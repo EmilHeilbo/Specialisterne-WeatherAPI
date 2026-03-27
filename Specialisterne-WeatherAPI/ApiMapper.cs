@@ -4,7 +4,7 @@ namespace Specialisterne_WeatherAPI;
 
 public static class ApiMapper
 {
-    public static void MapEndpoints<T>(this WebApplication app, DbContext db) where T : class
+    public static RouteGroupBuilder MapEndpoints<T>(this WebApplication app, DbContext db) where T : class
     {
         var routeName = typeof(T).Name.ToLower();
         var api = app.MapGroup($"/api/{routeName}");
@@ -26,17 +26,17 @@ public static class ApiMapper
                     : Results.NotFound())
             .WithName($"Get{typeof(T).Name}ById");
 
-        List<String> columns = [
+        List<string> columns = [
             "ReaderId",
             "DmiId"
         ];
-        foreach (string c in columns)
+        foreach (var c in columns)
         {
             try
             {
                 if (db.Set<T>().Any(t => EF.Property<Guid?>(t, c).HasValue))
                 {
-                    api.MapGet($"/{c[0..c.IndexOf("Id")]}", (string id) =>
+                    api.MapGet($"/{c[0..(c.EndsWith("Id") ? -2 : c.Length)]}", (string id) =>
                         db.Set<T>()
                             .Where(t => EF.Property<Guid>(t, c).ToString() == id)
                             .FirstOrDefault() is { } t
@@ -50,5 +50,7 @@ public static class ApiMapper
                 Console.WriteLine($"{typeof(T).Name} has no property `{c}`");
             }
         }
+
+        return api;
     }
 }

@@ -27,10 +27,10 @@ if (app.Environment.IsDevelopment())
 using var scope = app.Services.CreateScope();
 
 var dmiDb = scope.ServiceProvider.GetRequiredService<DmiDbContext>();
-app.MapEndpoints<Dmi>(dmiDb);
-app.MapEndpoints<Bme280>(dmiDb);
-app.MapEndpoints<Ds18B20>(dmiDb);
-app.MapEndpoints<Scd41>(dmiDb);
+var dmiApi = app.MapEndpoints<Dmi>(dmiDb);
+var bmeApi = app.MapEndpoints<Bme280>(dmiDb);
+var dsApi = app.MapEndpoints<Ds18B20>(dmiDb);
+var scdApi = app.MapEndpoints<Scd41>(dmiDb);
 
 app.Run();
 
